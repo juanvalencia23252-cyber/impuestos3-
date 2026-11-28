@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carga Fiscal - Calcular Impuestos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Responsable: <span th:text="${cargaFiscal.responsable}"></span></h1>
+    <p><strong>Entidad:</strong> <span th:text="${cargaFiscal.entidad}"></span></p>
+    <p><strong>Tipo de Impuesto:</strong> <span th:text="${cargaFiscal.tipoImpuesto.nombre}"></span></p>
+    <p><strong>Categoría:</strong> <span th:text="${cargaFiscal.categoria.nombre}"></span></p>
+
+    <h2>Punto 1: Impuestos en la Carga Fiscal</h2>
+    <table>
+        <tr>
+            <th>Concepto</th>
+            <th>Contribuyente</th>
+            <th>Tarifa (%)</th>
+            <th>Tipo de Impuesto</th>
+            <th>Categoría</th>
+            <th>Conteo (liquidaciones por periodo)</th>
+        </tr>
+        <tr th:each="imp : ${cargaFiscal.impuestos}">
+            <td th:text="${imp.concepto}"></td>
+            <td th:text="${imp.contribuyente}"></td>
+            <td th:text="${imp.tarifaPorcentaje}"></td>
+            <td th:text="${imp.tipoImpuesto.nombre}"></td>
+            <td th:text="${imp.categoria.nombre}"></td>
+            <td>
+                <span th:if="${#lists.isEmpty(imp.conteo)}">Sin registros (0)</span>
+                <span th:each="n : ${imp.conteo}" th:text="${n} + ' '"></span>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Punto 2: Con ListIterator</h2>
+    <ul>
+        <li th:each="m : ${mensajesPila}" th:text="${m}"></li>
+    </ul>
+
+    <h2>Punto 2: Con Iterator</h2>
+    <ul>
+        <li th:each="m : ${mensajesDeque}" th:text="${m}"></li>
+    </ul>
+
+    <h2>Punto 3: Filtro Funcional por EnumImpuesto (IVA)</h2>
+    <ul>
+        <li th:each="m : ${filtrados}" th:text="${m}"></li>
+    </ul>
+
+    <h2>Punto 4: Suma del Stack Conteo (Function)</h2>
+    <ul>
+        <li th:each="s : ${sumas}" th:text="${s}"></li>
+    </ul>
+
+    <h2>Punto 5: Mostrar Totales (verTotales)</h2>
+    <ul>
+        <li th:text="${totales}"></li>
+    </ul>
+</body>
+</html>
